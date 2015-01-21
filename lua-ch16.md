@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 16 章 面向对象编程
-date: 2014-08-20 20:20:36
-tags: lua
-categories: lua
-toc: true
----
+第 16 章 面向对象编程
+=====================
 
 lua中的table就是一种对象，这句话可以从3个方面来证实：
 
