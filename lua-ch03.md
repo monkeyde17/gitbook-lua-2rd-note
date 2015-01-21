@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 3 章 算术表达式
-date: 2014-08-20 20:20:23
-tags: lua
-categories: lua
-toc: true
----
+第 3 章 算术表达式
+==================
 
 ## 3\.1 算是表达式
 
