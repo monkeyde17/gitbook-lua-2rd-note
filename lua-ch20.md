@@ -1,0 +1,218 @@
+title: lua 2rd -- 第 20 章 字符串库
+date: 2014-08-20 20:20:40
+tags: lua
+categories: lua
+toc: true
+---
+
+## 20\.1 基础字符串函数
+
+```lua
+str = "abc"
+-- 返回str副本
+str = string.upper(str)
+str = string.lower(str)
+
+-- 从第2个到倒数第2个
+str = string.sub(str, 2, -2)
+
+print(string.char(97))          --> a
+print(string.char(97, 98, 99))  --> abc
+
+print(string.byte("abc", 1, 2)) --> 97 98
+
+-- 格式化字符串
+string.format("%d, %c", 10, 97)
+```
+
+## 20\.2 匹配模式函数
+
+* string.find函数
+
+```lua
+s = "hello world"
+i, j = string.find(s, "hello")
+print(i, j)                     --> 1 5
+print(string.sub(s, i, j))      --> hello
+print(string.find(s, "world"))  --> 7 11
+i, j = string.find(s, "l")
+print(i, j)                     --> 3 3
+print(string.find(s, "ll"))     --> nil
+
+
+local t = {}
+local i = 0
+while true do
+    i = string.find(s, "\n", i + 1)
+    if i == nil then
+        break
+    end
+    t[#t + 1] = i
+end
+```
+
+* string.match函数
+
+```lua
+
+print(string.match("hello world", "hello")) --> hello
+
+date = "today is 2014/08/08"
+d = string.match(date, "%d+/%d+/%d+")
+print(d)
+```
+
+* string.gsub函数
+
+```lua
+s = string.gsub("lua is cute", "cute", "great")
+print(s)            --> lua is great
+s = string.gsub("all lii", "l", "x")
+print(s)            --> axx xii
+s = string.gsub("lua is great", "sol", "sun")
+print(s)            --> lua is great
+
+s = string.gsub("all lii", "l", "x", 1)
+print(s)            --> axl lii
+s = string.gsub("all lii", "l", "x", 2)
+print(s)            --> axx lii
+```
+
+* string.gmatch
+
+返回一个函数
+
+```lua
+words = {}
+for w in string.gmatch(s, "%a+") do
+    words[#words + 1] = w
+end
+```
+
+`%a+` 匹配一个或者多个字母序列
+
+用`gmatch`和`gsub`可以模拟require在寻找模块时所用的搜索策略
+
+```lua
+function search (modename, path)
+    modename = string.gsub(modename, "%.", "/")
+    for c in string.gmatch(path, "[^;]+") do
+        local frame = string.gsub(c, "?", modename)
+        local f = io.open(fname)
+        if f then
+            f:close()
+            return fname
+        end
+    end
+    return nil;
+end
+```
+
+
+##　20\.3 模式
+
+可以用字符分类创建更多更有用的模式。
+
+
+* ` .  ` 所有字符         
+* ` %a ` 字母             
+* ` %c ` 控制字符         
+* ` %d ` 数字            
+* ` %l ` 小写字母         
+* ` %p ` 标点符号         
+* ` %s ` 空白字符         
+* ` %u ` 大写字母         
+* ` %w ` 字母和数字字符   
+* ` %x ` 十六进制数字               
+* ` %z ` 内部表示为0的字符
+
+> 这些分类用大写表示补集
+
+---------------------
+
+`魔法字符`
+
+`(` `)` `.` `%` `+` `-` `*` `?` `[` `]` `^` `$`
+
+* `%` 字符转意符
+* `%.` 匹配一个点
+* `%%` 匹配字符%
+
+------------------------
+
+`字符集`在一对方括号内将不同的字符分类或单个字符组合起来，就可以创建出自己的分类。
+
+```lua
+-- 统计一段文本中元音数量
+nvow = select(2, string.gsub(text, "[AEIOUaeiou]", ""))
+```
+* %d -- [0-9]
+* %x -- [0-9a-fA-F]
+
+> 在一个集合前加一个`^`，就可以得到这个字符集的补集。例如 [^0-7]，非八进制数字
+
+-------------------------
+
+修饰符
+
+* `+` 重复1次或多次
+* `*` 重复0次或多次，尽可能地扩展
+* `-` 重复0次或多次，匹配出最短的字串
+* `?` 可选部分(出现0次或1次)
+
+```lua
+-- word, word, word; word word
+print(string.gsub("one, and two; and three", "%a+", "word"))
+
+-- 1298
+print(string.match("the number 1298 is even", "%d+"))
+
+test = "int x; /* x */ int y; /* y */"
+-- int x; <COMMENT>
+print(string.gsub(test, "/%*.*%*/", "<COMMENT>"))
+
+test = "int x; /* x */ int y; /* y */"
+-- int x; <COMMENT> int y; <COMMENT>
+print(string.gsub(test, "/%*.-%*/", "<COMMENT>"))
+```
+
+> [+-]?%d+ : 匹配正负数
+
+
+* 模式以`^`起始，那么匹配开头
+* 模式以`$`起始，那么匹配结尾
+
+在模式中用`%b`匹配成对的字符， %b()，%b[]
+
+## 20\.4 捕获(capture)
+
+捕获功能可根据医改模式从目标字符串中抽出匹配于该模式的内容。
+
+对于具有捕获的模式，函数string.match会将所有捕获到的值作为单独的结果返回。即它会将目标字符串切成多个捕获到的部分。
+
+```lua
+pair = "name = anna"
+key, value = string.match(pair, "(%a+)%s*=(%a+)")
+print(key, value) --> name anna
+
+date = "Today is 17/7/2009"
+d, m, y = string.match(date, "(%d+)/(%d+)/(%d+)")
+print(d, m, y) --> 17 7 2009
+```
+
+还可以对模式本身使用捕获。在一个模式中，可以有`%d`这样的项，其中d是一个只有一位的数字，该项表示只匹配与第d个捕获相同的内容。
+
+```lua
+s = [[then he said : "it's all right"!]]
+q, quotedPart = string.match(s, "([\"'])(.-)%1")
+print(quotedPart) --> it's all right
+print(q)          --> "
+```
+
+
+to be continue ...
+page 176
+
+
+
+
