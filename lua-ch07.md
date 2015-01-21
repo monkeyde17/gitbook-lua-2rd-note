@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 7 章 迭代器与泛型for
-date: 2014-08-20 20:20:27
-tags: lua
-categories: lua
-toc: true
----
+第 7 章 迭代器与泛型for
+=======================
 
 ## 7\.1 迭代器与closure
 
