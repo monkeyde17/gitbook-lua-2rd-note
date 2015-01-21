@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 14 章 环境
-date: 2014-08-20 20:20:34
-tags: lua
-categories: lua
-toc: true
----
+第 14 章 环境
+=============
 
 lua将其所有的全局变量保存在一个常规table中，该table成为`环境`
 优点：
