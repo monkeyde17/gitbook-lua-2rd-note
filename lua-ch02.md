@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 2 章 类型与值
-date: 2014-08-20 20:20:22
-tags: lua
-categories: lua
-toc: true
----
+第 2 章 类型与值
+================
 
 8种基础数据类型
 
