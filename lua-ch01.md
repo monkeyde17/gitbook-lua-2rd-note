@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 1 章
-date: 2014-08-20 20:20:21
-tags: lua
-categories: lua
-toc: true
----
+第 1 章
+=======
 
 ## 1\.1
 
