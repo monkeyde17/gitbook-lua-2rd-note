@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 6 章 深入函数
-date: 2014-08-20 20:20:26
-tags: lua
-categories: lua
-toc: true
----
+第 6 章 深入函数
+================
 
 在lua中函数是一种第一类值，他们具有特定词法域。
 
