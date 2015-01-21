@@ -1,9 +1,5 @@
-title: lua 2rd -- 第 11 章 数据结构
-date: 2014-08-20 20:20:31
-tags: lua
-categories: lua
-toc: true
----
+第 11 章 数据结构
+=================
 
 ## 11\.6 字符串缓冲
 
