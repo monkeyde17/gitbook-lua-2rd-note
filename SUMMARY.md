@@ -1,6 +1,6 @@
 # 目录
 
-Lua程序设计第二版
+The Lua Programming Language
 
 - [前言](README.md)
 - [第1章](ch01.md)
